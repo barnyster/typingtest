@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Tes Mengetik - Kalimat Acak Tak Terbatas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-keyboard"></i>
+                <h1>Game Tes Mengetik</h1>
+            </div>
+            <p class="tagline">Ketik kalimat acak sebanyak-banyaknya dalam 1 menit!</p>
+        </header>
+
+        <div class="game-container">
+            <div class="stats-panel">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="timer">60</div>
+                        <div class="stat-label">Detik Tersisa</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="wpm">0</div>
+                        <div class="stat-label">KPM</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="accuracy">100%</div>
+                        <div class="stat-label">Akurasi</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="score">0</div>
+                        <div class="stat-label">Skor</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="correct-lines">0</div>
+                        <div class="stat-label">Kalimat Benar</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="error-lines">0</div>
+                        <div class="stat-label">Kalimat Salah</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="difficulty-selector">
+                <h3><i class="fas fa-sliders-h"></i> Pilih Mode Kalimat:</h3>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn active" data-level="easy">
+                        <i class="fas fa-smile"></i> Pendek
+                    </button>
+                    <button class="difficulty-btn" data-level="medium">
+                        <i class="fas fa-meh"></i> Sedang
+                    </button>
+                    <button class="difficulty-btn" data-level="hard">
+                        <i class="fas fa-frown"></i> Panjang
+                    </button>
+                    <button class="difficulty-btn" data-level="mixed">
+                        <i class="fas fa-random"></i> Campuran
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-display-container">
+                <div class="current-text-container">
+                    <h3><i class="fas fa-keyboard"></i> Teks yang sedang diketik:</h3>
+                    <div class="current-text-display" id="current-text-display">
+                        <div class="text-to-type" id="text-to-type">
+                            <div class="text-line">Mulai mengetik di bawah untuk memulai game...</div>
+                        </div>
+                        <div class="text-info">
+                            <span id="text-length">0 karakter</span>
+                            <span id="text-number">Kalimat #1</span>
+                            <span id="word-count">0 kata</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="typed-text-container">
+                    <h3><i class="fas fa-history"></i> Input Anda:</h3>
+                    <div class="typed-text-display" id="typed-text-display">
+                        <div class="empty-message">Mulai mengetik di bawah...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="text-input" 
+                        placeholder="Ketik di sini untuk memulai game..."
+                        rows="3"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        autofocus
+                    ></textarea>
+                    <div class="input-actions">
+                        <button id="skip-btn" class="btn btn-warning">
+                            <i class="fas fa-forward"></i> Lewati
+                        </button>
+                        <button id="clear-btn" class="btn btn-info">
+                            <i class="fas fa-eraser"></i> Bersihkan
+                        </button>
+                    </div>
+                </div>
+                <div class="input-info">
+                    <div class="hint">
+                        <i class="fas fa-info-circle"></i> Game akan otomatis mulai saat Anda mengetik
+                    </div>
+                    <div class="char-count">
+                        <span id="typed-chars">0</span> karakter diketik
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="start-btn" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Mulai Game
+                </button>
+                <button id="pause-btn" class="btn btn-secondary" disabled>
+                    <i class="fas fa-pause"></i> Jeda
+                </button>
+                <button id="reset-btn" class="btn btn-danger">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+                <button id="sound-toggle" class="btn btn-sound">
+                    <i class="fas fa-volume-up"></i> Suara
+                </button>
+            </div>
+
+            <div class="results-panel" id="results-panel" style="opacity: 0.7;">
+                <h3><i class="fas fa-chart-line"></i> Hasil Tes Mengetik</h3>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Total Kalimat</div>
+                        <div class="result-value" id="final-total-lines">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Kecepatan</div>
+                        <div class="result-value" id="final-wpm">0 KPM</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Akurasi</div>
+                        <div class="result-value" id="final-accuracy">100%</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Skor</div>
+                        <div class="result-value" id="final-score">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Kalimat Benar</div>
+                        <div class="result-value" id="final-correct">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Kalimat Salah</div>
+                        <div class="result-value" id="final-errors">0</div>
+                    </div>
+                </div>
+                <div class="performance-rating">
+                    <div class="rating-stars" id="rating-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="result-message" id="result-message">
+                        <i class="fas fa-info-circle"></i> Mulai mengetik untuk memulai game
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-history">
+                <h3><i class="fas fa-list-ol"></i> Riwayat Kalimat Terakhir:</h3>
+                <div class="history-container" id="text-history">
+                    <div class="empty-message">Belum ada riwayat teks</div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Dibuat dengan <i class="fas fa-heart"></i> oleh Game Tes Mengetik &copy; 2023</p>
+            <div class="footer-links">
+                <a href="#" id="help-btn"><i class="fas fa-question-circle"></i> Cara Bermain</a>
+                <a href="#" id="about-btn"><i class="fas fa-info-circle"></i> Tentang Game</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal Bantuan -->
+    <div class="modal" id="help-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-question-circle"></i> Cara Bermain</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="instruction">
+                    <h4><i class="fas fa-play"></i> Memulai Game</h4>
+                    <p>1. Pilih mode kalimat (Pendek, Sedang, Panjang, atau Campuran)</p>
+                    <p>2. <strong>Langsung mulai mengetik</strong> - game otomatis akan mulai</p>
+                    <p>3. Ketik kalimat yang muncul di kotak atas</p>
+                    <p>4. Gunakan SPASI seperti mengetik biasa, sistem akan otomatis lanjut ke kalimat baru</p>
+                </div>
+                <div class="instruction">
+                    <h4><i class="fas fa-infinity"></i> Sistem Kalimat Tak Terbatas</h4>
+                    <p>• Game akan memberikan kalimat acak baru setiap kali</p>
+                    <p>• Setiap kalimat terdiri dari 1-2 baris teks</p>
+                    <p>• Tidak ada batasan jumlah kalimat</p>
+                    <p>• Ketik sebanyak-banyaknya dalam waktu 60 detik</p>
+                </div>
+                <div class="instruction">
+                    <h4><i class="fas fa-chart-bar"></i> Penilaian</h4>
+                    <p><strong>KPM (Kata per Menit):</strong> Total kata benar per menit</p>
+                    <p><strong>Akurasi Kalimat:</strong> Persentase kalimat yang diketik dengan benar</p>
+                    <p><strong>Skor:</strong> (Kata Benar × 5) × Akurasi × Multiplier mode</p>
+                    <p><strong>Multiplier:</strong> Pendek (1x), Sedang (1.5x), Panjang (2x), Campuran (1.2x-2x)</p>
+                </div>
+                <div class="instruction">
+                    <h4><i class="fas fa-trophy"></i> Tips Menang</h4>
+                    <p>• Fokus pada akurasi terlebih dahulu</p>
+                    <p>• Gunakan semua 10 jari untuk mengetik</p>
+                    <p>• Perhatikan tanda baca dan spasi</p>
+                    <p>• Latihan rutin meningkatkan kecepatan 20-30% dalam 2 minggu</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tentang -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> Tentang Game</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="about-content">
+                    <h4>Game Tes Mengetik - Kalimat Acak</h4>
+                    <p>Game ini dirancang untuk melatih kecepatan dan akurasi mengetik dengan sistem kalimat acak tak terbatas dalam waktu 60 detik.</p>
+                    
+                    <h4>Fitur Utama:</h4>
+                    <ul>
+                        <li><strong>Auto-Start:</strong> Langsung mulai saat mengetik tanpa klik tombol</li>
+                        <li><strong>Sistem Spasi Otomatis:</strong> Ketik seperti biasa, gunakan SPASI untuk lanjut</li>
+                        <li><strong>Auto-Submit:</strong> Sistem otomatis lanjut ke kalimat baru</li>
+                        <li><strong>4 Mode Kesulitan:</strong> Sesuaikan dengan level kemampuan</li>
+                        <li><strong>Highlight Real-time:</strong> Lihat kesalahan langsung saat mengetik</li>
+                        <li><strong>Statistik Lengkap:</strong> KPM, akurasi, skor, dan rating bintang</li>
+                    </ul>
+                    
+                    <h4>Level Performa:</h4>
+                    <div class="performance-levels">
+                        <div class="level">
+                            <span class="level-name">Pemula:</span>
+                            <span class="level-range">0-20 KPM</span>
+                        </div>
+                        <div class="level">
+                            <span class="level-name">Menengah:</span>
+                            <span class="level-range">21-40 KPM</span>
+                        </div>
+                        <div class="level">
+                            <span class="level-name">Lancar:</span>
+                            <span class="level-range">41-60 KPM</span>
+                        </div>
+                        <div class="level">
+                            <span class="level-name">Ahli:</span>
+                            <span class="level-range">61-80 KPM</span>
+                        </div>
+                        <div class="level">
+                            <span class="level-name">Master:</span>
+                            <span class="level-range">81+ KPM</span>
+                        </div>
+                    </div>
+                    
+                    <h4>Keterangan Warna:</h4>
+                    <div class="color-guide">
+                        <div class="color-item">
+                            <span class="color-box" style="background-color: rgba(76, 201, 240, 0.3);"></span>
+                            <span class="color-text">Karakter Benar</span>
+                        </div>
+                        <div class="color-item">
+                            <span class="color-box" style="background-color: rgba(247, 37, 133, 0.3);"></span>
+                            <span class="color-text">Karakter Salah</span>
+                        </div>
+                        <div class="color-item">
+                            <span class="color-box" style="background-color: rgba(67, 97, 238, 0.3);"></span>
+                            <span class="color-text">Karakter Saat Ini</span>
+                        </div>
+                    </div>
+                    
+                    <p class="motivation">"Latihan membuat sempurna. Setiap hari mengetik 10 menit dapat meningkatkan kecepatan Anda 50% dalam sebulan!"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
