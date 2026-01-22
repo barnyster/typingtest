@@ -120,7 +120,8 @@ let gameState = {
     totalTypedChars: 0,
     totalWords: 0,
     lastWordTime: null,
-    isSubmitting: false
+    isSubmitting: false,
+    timeMode: '60' // Mode waktu default
 };
 
 // Elemen DOM
@@ -147,13 +148,14 @@ const elements = {
     clearBtn: document.getElementById('clear-btn'),
     
     // Controls
-    startBtn: document.getElementById('start-btn'),
-    pauseBtn: document.getElementById('pause-btn'),
     resetBtn: document.getElementById('reset-btn'),
     soundToggle: document.getElementById('sound-toggle'),
     
     // Difficulty
     difficultyBtns: document.querySelectorAll('.difficulty-btn'),
+    
+    // Time Mode
+    timeModeBtns: document.querySelectorAll('.time-btn'),
     
     // Results
     resultsPanel: document.getElementById('results-panel'),
@@ -180,8 +182,6 @@ const elements = {
 // Inisialisasi game
 function initGame() {
     // Set event listeners
-    elements.startBtn.addEventListener('click', toggleGame);
-    elements.pauseBtn.addEventListener('click', togglePause);
     elements.resetBtn.addEventListener('click', resetGame);
     elements.soundToggle.addEventListener('click', toggleSound);
     
@@ -195,6 +195,11 @@ function initGame() {
     
     elements.difficultyBtns.forEach(btn => {
         btn.addEventListener('click', () => changeDifficulty(btn.dataset.level));
+    });
+    
+    // Time Mode buttons
+    elements.timeModeBtns.forEach(btn => {
+        btn.addEventListener('click', () => changeTimeMode(btn.dataset.time));
     });
     
     // Modal events
@@ -232,13 +237,11 @@ function initGame() {
     // Setup auto-start
     setupAutoStart();
     
-    // Update tombol
-    elements.startBtn.disabled = false;
-    elements.startBtn.innerHTML = '<i class="fas fa-play"></i> Mulai Game';
-    elements.pauseBtn.disabled = true;
-    
     // Initialize sound toggle
     updateSoundButton();
+    
+    // Initialize time mode
+    updateTimeModeButtons();
 }
 
 // Setup auto-start saat mengetik
@@ -267,6 +270,51 @@ function updateSoundButton() {
         elements.soundToggle.classList.remove('btn-info');
         elements.soundToggle.classList.add('btn-sound');
     }
+}
+
+// Update time mode buttons
+function updateTimeModeButtons() {
+    elements.timeModeBtns.forEach(btn => {
+        if (btn.dataset.time === gameState.timeMode) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+// Change time mode
+function changeTimeMode(time) {
+    if (gameState.isPlaying && !gameState.isPaused) {
+        if (!confirm("Game sedang berjalan. Apakah Anda yakin ingin mengubah waktu? Game akan direset.")) {
+            return;
+        }
+        resetGame();
+    }
+    
+    gameState.timeMode = time;
+    switch(time) {
+        case '30':
+            gameState.totalTime = 30;
+            break;
+        case '60':
+            gameState.totalTime = 60;
+            break;
+        case '120':
+            gameState.totalTime = 120;
+            break;
+        case '300':
+            gameState.totalTime = 300;
+            break;
+    }
+    
+    gameState.timeLeft = gameState.totalTime;
+    
+    // Update buttons
+    updateTimeModeButtons();
+    
+    // Update display
+    elements.timer.textContent = gameState.timeLeft;
 }
 
 // Generate teks baru secara acak
@@ -399,19 +447,6 @@ function updateTypedTextDisplay() {
     }
 }
 
-// Toggle game (start/pause)
-function toggleGame() {
-    if (!gameState.isPlaying) {
-        startGame();
-    } else {
-        if (gameState.isPaused) {
-            resumeGame();
-        } else {
-            pauseGame();
-        }
-    }
-}
-
 // Mulai game
 function startGame() {
     if (gameState.isPlaying) return;
@@ -425,10 +460,6 @@ function startGame() {
     gameState.lastWordTime = new Date();
     
     // Update tombol
-    elements.startBtn.innerHTML = '<i class="fas fa-pause"></i> Jeda';
-    elements.startBtn.classList.remove('btn-primary');
-    elements.startBtn.classList.add('btn-secondary');
-    elements.pauseBtn.disabled = false;
     elements.skipBtn.disabled = false;
     elements.clearBtn.disabled = false;
     
@@ -452,50 +483,6 @@ function startGame() {
     
     // Focus ke input
     elements.textInput.focus();
-}
-
-// Jeda game
-function pauseGame() {
-    if (!gameState.isPlaying || gameState.isPaused) return;
-    
-    gameState.isPaused = true;
-    clearInterval(gameState.timer);
-    
-    // Update tombol
-    elements.startBtn.innerHTML = '<i class="fas fa-play"></i> Lanjutkan';
-    elements.pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Terjeda';
-    
-    // Update hasil panel
-    elements.resultMessage.innerHTML = '<i class="fas fa-info-circle"></i> Game dijeda';
-    
-    // Disable input sementara
-    elements.textInput.disabled = true;
-    elements.skipBtn.disabled = true;
-    elements.clearBtn.disabled = true;
-}
-
-// Lanjutkan game
-function resumeGame() {
-    if (!gameState.isPlaying || !gameState.isPaused) return;
-    
-    gameState.isPaused = false;
-    gameState.startTime = new Date() - (gameState.totalTime - gameState.timeLeft) * 1000;
-    
-    // Update tombol
-    elements.startBtn.innerHTML = '<i class="fas fa-pause"></i> Jeda';
-    elements.pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Jeda';
-    
-    // Update hasil panel
-    elements.resultMessage.innerHTML = '<i class="fas fa-info-circle"></i> Game sedang berjalan...';
-    
-    // Enable input kembali
-    elements.textInput.disabled = false;
-    elements.skipBtn.disabled = false;
-    elements.clearBtn.disabled = false;
-    elements.textInput.focus();
-    
-    // Lanjutkan timer
-    startTimer();
 }
 
 // Reset game
@@ -527,12 +514,6 @@ function resetGame() {
     elements.textInput.focus();
     
     // Reset tombol
-    elements.startBtn.innerHTML = '<i class="fas fa-play"></i> Mulai Game';
-    elements.startBtn.classList.remove('btn-secondary');
-    elements.startBtn.classList.add('btn-primary');
-    elements.startBtn.disabled = false;
-    elements.pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Jeda';
-    elements.pauseBtn.disabled = true;
     elements.skipBtn.disabled = true;
     elements.clearBtn.disabled = true;
     
@@ -922,12 +903,6 @@ function endGame() {
     elements.skipBtn.disabled = true;
     elements.clearBtn.disabled = true;
     
-    // Update tombol
-    elements.startBtn.innerHTML = '<i class="fas fa-play"></i> Mulai Lagi';
-    elements.startBtn.classList.remove('btn-secondary');
-    elements.startBtn.classList.add('btn-primary');
-    elements.pauseBtn.disabled = true;
-    
     // Tampilkan hasil akhir
     showResults();
     
@@ -1095,17 +1070,6 @@ function playNote(audioContext, frequency, duration) {
     
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + duration);
-}
-
-// Toggle pause
-function togglePause() {
-    if (!gameState.isPlaying) return;
-    
-    if (gameState.isPaused) {
-        resumeGame();
-    } else {
-        pauseGame();
-    }
 }
 
 // Initialize game saat halaman dimuat
