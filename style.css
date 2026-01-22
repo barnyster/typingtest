@@ -194,22 +194,12 @@ body {
     box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
 }
 
-/* Text Display Container */
-.text-display-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+/* Tampilan Typing Tunggal */
+.typing-display {
     margin-bottom: 30px;
 }
 
-@media (max-width: 992px) {
-    .text-display-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-.current-text-container h3,
-.typed-text-container h3 {
+.typing-display h3 {
     margin-bottom: 15px;
     color: var(--success);
     font-size: 1.2rem;
@@ -218,7 +208,7 @@ body {
     gap: 10px;
 }
 
-.current-text-display {
+.typing-area {
     background: rgba(0, 0, 0, 0.3);
     border-radius: var(--border-radius);
     padding: 25px;
@@ -227,15 +217,35 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
-.text-to-type {
-    font-size: 1.4rem;
+.typing-area.correct {
+    border-color: rgba(76, 201, 240, 0.3);
+    background: rgba(76, 201, 240, 0.05);
+}
+
+.typing-area.incorrect {
+    border-color: rgba(247, 37, 133, 0.3);
+    background: rgba(247, 37, 133, 0.05);
+}
+
+.typing-area.typing {
+    border-color: rgba(67, 97, 238, 0.3);
+    background: rgba(67, 97, 238, 0.05);
+}
+
+.typing-text {
+    font-size: 1.5rem;
     line-height: 1.8;
     font-family: 'Roboto Mono', monospace;
     color: var(--light);
     margin-bottom: 15px;
     text-align: left;
+    min-height: 120px;
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .text-line {
@@ -247,7 +257,7 @@ body {
     margin-bottom: 0;
 }
 
-.text-info {
+.typing-info {
     display: flex;
     justify-content: space-between;
     color: var(--gray-light);
@@ -255,39 +265,6 @@ body {
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.typed-text-display {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: var(--border-radius);
-    padding: 25px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    min-height: 200px;
-    max-height: 200px;
-    overflow-y: auto;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1.3rem;
-    line-height: 1.7;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
-.typed-text-display.correct {
-    border-color: rgba(76, 201, 240, 0.3);
-    background: rgba(76, 201, 240, 0.05);
-}
-
-.typed-text-display.incorrect {
-    border-color: rgba(247, 37, 133, 0.3);
-    background: rgba(247, 37, 133, 0.05);
-}
-
-.empty-message {
-    width: 100%;
-    text-align: center;
-    color: var(--gray-light);
-    font-style: italic;
-    padding: 40px 20px;
 }
 
 /* Input Container */
@@ -828,6 +805,18 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.color-box.correct-char {
+    background: rgba(76, 201, 240, 0.3);
+}
+
+.color-box.incorrect-char {
+    background: rgba(247, 37, 133, 0.3);
+}
+
+.color-box.current-char {
+    background: rgba(67, 97, 238, 0.3);
+}
+
 .color-text {
     color: var(--gray-light);
 }
@@ -842,27 +831,30 @@ body {
     margin-top: 20px;
 }
 
-/* Character highlighting untuk teks yang diketik */
+/* Character highlighting */
 .correct-char {
     color: #4ade80;
     background: rgba(76, 201, 240, 0.15);
-    padding: 1px;
-    border-radius: 2px;
+    padding: 2px 1px;
+    border-radius: 3px;
+    font-weight: 500;
 }
 
 .incorrect-char {
     color: #f87171;
     background: rgba(247, 37, 133, 0.15);
-    padding: 1px;
-    border-radius: 2px;
+    padding: 2px 1px;
+    border-radius: 3px;
     text-decoration: line-through;
+    font-weight: 500;
 }
 
 .current-char {
     background: rgba(67, 97, 238, 0.3);
-    padding: 1px;
-    border-radius: 2px;
+    padding: 2px 1px;
+    border-radius: 3px;
     position: relative;
+    font-weight: 600;
 }
 
 .current-char::after {
@@ -874,11 +866,6 @@ body {
     height: 2px;
     background: var(--primary);
     animation: cursor-blink 1s infinite;
-}
-
-@keyframes cursor-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
 }
 
 /* Animasi */
@@ -907,6 +894,11 @@ body {
     animation: slideIn 0.3s ease;
 }
 
+@keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .logo h1 {
@@ -921,8 +913,8 @@ body {
         font-size: 1.5rem;
     }
     
-    .text-to-type {
-        font-size: 1.2rem;
+    .typing-text {
+        font-size: 1.3rem;
     }
     
     .btn {
@@ -956,7 +948,7 @@ body {
         align-items: center;
     }
     
-    .text-to-type {
+    .typing-text {
         font-size: 1.1rem;
     }
 }
@@ -979,23 +971,4 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
-}
-
-/* Auto-start indicator */
-.auto-start-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 8px;
-    background: rgba(76, 201, 240, 0.2);
-    border-radius: 10px;
-    font-size: 0.8rem;
-    color: var(--success);
-    margin-left: 10px;
-    animation: pulse-glow 2s infinite;
-}
-
-@keyframes pulse-glow {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
 }
