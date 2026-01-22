@@ -133,12 +133,12 @@ const elements = {
     correctLines: document.getElementById('correct-lines'),
     errorLines: document.getElementById('error-lines'),
     
-    // Text display
-    textToType: document.getElementById('text-to-type'),
+    // Typing area (tampilan tunggal)
+    typingArea: document.getElementById('typing-area'),
+    typingText: document.getElementById('typing-text'),
     textLength: document.getElementById('text-length'),
     textNumber: document.getElementById('text-number'),
     wordCount: document.getElementById('word-count'),
-    typedTextDisplay: document.getElementById('typed-text-display'),
     
     // Input
     textInput: document.getElementById('text-input'),
@@ -293,9 +293,9 @@ function generateNewText() {
     updateTextDisplay();
 }
 
-// Update tampilan teks
+// Update tampilan teks (tampilan tunggal)
 function updateTextDisplay() {
-    const container = elements.textToType;
+    const container = elements.typingText;
     
     // Split teks menjadi baris jika terlalu panjang
     const words = gameState.currentText.split(' ');
@@ -315,7 +315,7 @@ function updateTextDisplay() {
         lines.push(currentLine);
     }
     
-    // Update container
+    // Tampilkan teks tanpa highlight (sebelum mengetik)
     container.innerHTML = '';
     lines.forEach((line, index) => {
         const lineElement = document.createElement('div');
@@ -333,10 +333,70 @@ function updateTextDisplay() {
     elements.wordCount.textContent = `${wordCount} kata`;
     elements.textNumber.textContent = `Kalimat #${gameState.totalLines + 1}`;
     
+    // Reset kelas typing area
+    elements.typingArea.className = 'typing-area typing';
+    
     // Animasi
     container.classList.remove('pulse');
     void container.offsetWidth; // Trigger reflow
     container.classList.add('pulse');
+}
+
+// Update typed text display dengan highlight
+function updateTypedTextDisplay() {
+    const container = elements.typingText;
+    const inputText = elements.textInput.value;
+    const targetText = gameState.currentText;
+    
+    if (inputText === '') {
+        // Jika belum mengetik, tampilkan teks biasa
+        updateTextDisplay();
+        elements.typingArea.className = 'typing-area typing';
+        return;
+    }
+    
+    // Buat tampilan dengan highlight
+    let displayHTML = '';
+    let allCorrect = true;
+    let anyTyped = false;
+    
+    // Karakter per karakter
+    for (let i = 0; i < targetText.length; i++) {
+        if (i < inputText.length) {
+            anyTyped = true;
+            if (inputText[i].toLowerCase() === targetText[i].toLowerCase()) {
+                displayHTML += `<span class="correct-char">${targetText[i]}</span>`;
+            } else {
+                displayHTML += `<span class="incorrect-char">${targetText[i]}</span>`;
+                allCorrect = false;
+            }
+        } else if (i === inputText.length) {
+            displayHTML += `<span class="current-char">${targetText[i]}</span>`;
+        } else {
+            displayHTML += targetText[i];
+        }
+    }
+    
+    // Jika input lebih panjang dari target
+    if (inputText.length > targetText.length) {
+        anyTyped = true;
+        for (let i = targetText.length; i < inputText.length; i++) {
+            displayHTML += `<span class="incorrect-char">${inputText[i]}</span>`;
+            allCorrect = false;
+        }
+    }
+    
+    // Update container dengan HTML
+    container.innerHTML = displayHTML;
+    
+    // Update kelas typing area berdasarkan akurasi
+    if (!anyTyped) {
+        elements.typingArea.className = 'typing-area typing';
+    } else if (allCorrect && inputText.length >= targetText.length) {
+        elements.typingArea.className = 'typing-area correct';
+    } else {
+        elements.typingArea.className = 'typing-area incorrect';
+    }
 }
 
 // Toggle game (start/pause)
@@ -680,7 +740,7 @@ function checkText() {
     updateStats();
     
     // Scroll otomatis ke teks baru
-    elements.textToType.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    elements.typingArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 // Calculate correct characters (dengan toleransi)
@@ -745,56 +805,6 @@ function clearInput() {
     elements.typedChars.textContent = '0';
     updateTypedTextDisplay();
     playSound('clear');
-}
-
-// Update typed text display dengan highlight
-function updateTypedTextDisplay() {
-    const container = elements.typedTextDisplay;
-    const inputText = elements.textInput.value;
-    const targetText = gameState.currentText;
-    
-    if (inputText === '') {
-        container.innerHTML = '<div class="empty-message">Mulai mengetik di bawah...</div>';
-        container.className = 'typed-text-display';
-        return;
-    }
-    
-    // Buat tampilan dengan highlight
-    let displayHTML = '';
-    
-    // Karakter per karakter
-    for (let i = 0; i < targetText.length; i++) {
-        if (i < inputText.length) {
-            if (inputText[i].toLowerCase() === targetText[i].toLowerCase()) {
-                displayHTML += `<span class="correct-char">${targetText[i]}</span>`;
-            } else {
-                displayHTML += `<span class="incorrect-char">${targetText[i]}</span>`;
-            }
-        } else if (i === inputText.length) {
-            displayHTML += `<span class="current-char">${targetText[i]}</span>`;
-        } else {
-            displayHTML += targetText[i];
-        }
-    }
-    
-    // Jika input lebih panjang dari target
-    if (inputText.length > targetText.length) {
-        for (let i = targetText.length; i < inputText.length; i++) {
-            displayHTML += `<span class="incorrect-char">${inputText[i]}</span>`;
-        }
-    }
-    
-    container.innerHTML = displayHTML;
-    
-    // Tambahkan kelas berdasarkan kesesuaian
-    const accuracy = calculateCorrectChars(inputText, targetText) / Math.max(inputText.length, targetText.length);
-    if (accuracy >= 0.9) {
-        container.className = 'typed-text-display correct';
-    } else if (accuracy >= 0.7) {
-        container.className = 'typed-text-display';
-    } else {
-        container.className = 'typed-text-display incorrect';
-    }
 }
 
 // Update text history
