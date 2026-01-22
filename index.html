@@ -15,7 +15,7 @@
                 <i class="fas fa-keyboard"></i>
                 <h1>Game Tes Mengetik</h1>
             </div>
-            <p class="tagline">Ketik kalimat acak sebanyak-banyaknya dalam 1 menit!</p>
+            <p class="tagline">Ketik kalimat acak sebanyak-banyaknya dalam waktu yang ditentukan!</p>
         </header>
 
         <div class="game-container">
@@ -66,7 +66,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-value" id="correct-lines">0</div>
-                        <div class="stat-label">Kalimat Benar</div>
+                        <div class="stat-label">Benar</div>
                     </div>
                 </div>
 
@@ -76,7 +76,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-value" id="error-lines">0</div>
-                        <div class="stat-label">Kalimat Salah</div>
+                        <div class="stat-label">Salah</div>
                     </div>
                 </div>
             </div>
@@ -95,6 +95,24 @@
                     </button>
                     <button class="difficulty-btn" data-level="mixed">
                         <i class="fas fa-random"></i> Campuran
+                    </button>
+                </div>
+            </div>
+
+            <div class="time-selector">
+                <h3><i class="fas fa-clock"></i> Pilih Waktu:</h3>
+                <div class="time-buttons">
+                    <button class="time-btn active" data-time="60">
+                        <i class="fas fa-stopwatch"></i> 1 Menit
+                    </button>
+                    <button class="time-btn" data-time="30">
+                        <i class="fas fa-stopwatch"></i> 30 Detik
+                    </button>
+                    <button class="time-btn" data-time="120">
+                        <i class="fas fa-stopwatch"></i> 2 Menit
+                    </button>
+                    <button class="time-btn" data-time="300">
+                        <i class="fas fa-stopwatch"></i> 5 Menit
                     </button>
                 </div>
             </div>
@@ -146,12 +164,6 @@
             </div>
 
             <div class="controls">
-                <button id="start-btn" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Mulai Game
-                </button>
-                <button id="pause-btn" class="btn btn-secondary" disabled>
-                    <i class="fas fa-pause"></i> Jeda
-                </button>
                 <button id="reset-btn" class="btn btn-danger">
                     <i class="fas fa-redo"></i> Reset
                 </button>
@@ -180,11 +192,11 @@
                         <div class="result-value" id="final-score">0</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-label">Kalimat Benar</div>
+                        <div class="result-label">Benar</div>
                         <div class="result-value" id="final-correct">0</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-label">Kalimat Salah</div>
+                        <div class="result-label">Salah</div>
                         <div class="result-value" id="final-errors">0</div>
                     </div>
                 </div>
@@ -230,17 +242,18 @@
                 <div class="instruction">
                     <h4><i class="fas fa-play"></i> Memulai Game</h4>
                     <p>1. Pilih mode kalimat (Pendek, Sedang, Panjang, atau Campuran)</p>
-                    <p>2. <strong>Langsung mulai mengetik</strong> - game otomatis akan mulai</p>
-                    <p>3. Ketik kalimat yang muncul di kotak atas</p>
-                    <p>4. Warna akan berubah: <span class="correct-char">hijau</span> (benar), <span class="incorrect-char">merah</span> (salah)</p>
-                    <p>5. Game otomatis lanjut ke kalimat berikutnya saat selesai</p>
+                    <p>2. Pilih waktu (30 detik, 1 menit, 2 menit, atau 5 menit)</p>
+                    <p>3. <strong>Langsung mulai mengetik</strong> - game otomatis akan mulai</p>
+                    <p>4. Ketik kalimat yang muncul di kotak atas</p>
+                    <p>5. Warna akan berubah: <span class="correct-char">hijau</span> (benar), <span class="incorrect-char">merah</span> (salah)</p>
+                    <p>6. Game otomatis lanjut ke kalimat berikutnya saat selesai</p>
                 </div>
                 <div class="instruction">
                     <h4><i class="fas fa-infinity"></i> Sistem Kalimat Tak Terbatas</h4>
                     <p>• Game akan memberikan kalimat acak baru setiap kali</p>
                     <p>• Setiap kalimat terdiri dari 1-2 baris teks</p>
                     <p>• Tidak ada batasan jumlah kalimat</p>
-                    <p>• Ketik sebanyak-banyaknya dalam waktu 60 detik</p>
+                    <p>• Ketik sebanyak-banyaknya dalam waktu yang dipilih</p>
                 </div>
                 <div class="instruction">
                     <h4><i class="fas fa-chart-bar"></i> Penilaian</h4>
@@ -248,12 +261,14 @@
                     <p><strong>Akurasi Kalimat:</strong> Persentase kalimat yang diketik dengan benar</p>
                     <p><strong>Skor:</strong> (Kalimat Benar × 25) × Akurasi × Multiplier mode</p>
                     <p><strong>Multiplier:</strong> Pendek (1x), Sedang (1.5x), Panjang (2x), Campuran (1.2x-2x)</p>
+                    <p><strong>Waktu:</strong> 30 detik, 1 menit, 2 menit, atau 5 menit</p>
                 </div>
                 <div class="instruction">
                     <h4><i class="fas fa-trophy"></i> Tips Menang</h4>
                     <p>• Fokus pada akurasi terlebih dahulu</p>
                     <p>• Gunakan semua 10 jari untuk mengetik</p>
                     <p>• Perhatikan tanda baca dan spasi</p>
+                    <p>• Pilih waktu sesuai kemampuan</p>
                     <p>• Latihan rutin meningkatkan kecepatan 20-30% dalam 2 minggu</p>
                 </div>
             </div>
@@ -270,7 +285,7 @@
             <div class="modal-body">
                 <div class="about-content">
                     <h4>Game Tes Mengetik - Kalimat Acak</h4>
-                    <p>Game ini dirancang untuk melatih kecepatan dan akurasi mengetik dengan sistem kalimat acak tak terbatas dalam waktu 60 detik.</p>
+                    <p>Game ini dirancang untuk melatih kecepatan dan akurasi mengetik dengan sistem kalimat acak tak terbatas dalam waktu yang bisa dipilih.</p>
                     
                     <h4>Fitur Utama:</h4>
                     <ul>
@@ -278,6 +293,7 @@
                         <li><strong>Warna Real-time:</strong> <span class="correct-char">Hijau</span> untuk benar, <span class="incorrect-char">Merah</span> untuk salah</li>
                         <li><strong>Auto-Submit:</strong> Sistem otomatis lanjut ke kalimat baru</li>
                         <li><strong>4 Mode Kesulitan:</strong> Sesuaikan dengan level kemampuan</li>
+                        <li><strong>4 Pilihan Waktu:</strong> 30 detik, 1 menit, 2 menit, 5 menit</li>
                         <li><strong>Tampilan Tunggal:</strong> Fokus pada satu kalimat sekaligus</li>
                         <li><strong>Statistik Lengkap:</strong> KPM, akurasi, skor, dan rating bintang</li>
                     </ul>
@@ -319,6 +335,26 @@
                         <div class="color-item">
                             <span class="color-box current-char"></span>
                             <span class="color-text">Karakter Saat Ini</span>
+                        </div>
+                    </div>
+                    
+                    <h4>Tombol Kontrol:</h4>
+                    <div class="color-guide">
+                        <div class="color-item">
+                            <span class="color-box" style="background: #f72585;"></span>
+                            <span class="color-text">Reset - Mulai ulang game</span>
+                        </div>
+                        <div class="color-item">
+                            <span class="color-box" style="background: #4361ee;"></span>
+                            <span class="color-text">Suara - Matikan/nyalakan suara</span>
+                        </div>
+                        <div class="color-item">
+                            <span class="color-box" style="background: #f8961e;"></span>
+                            <span class="color-text">Lewati - Lewati kalimat saat ini</span>
+                        </div>
+                        <div class="color-item">
+                            <span class="color-box" style="background: #3a0ca3;"></span>
+                            <span class="color-text">Bersihkan - Hapus input</span>
                         </div>
                     </div>
                     
