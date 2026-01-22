@@ -99,25 +99,17 @@
                 </div>
             </div>
 
-            <div class="text-display-container">
-                <div class="current-text-container">
-                    <h3><i class="fas fa-keyboard"></i> Teks yang sedang diketik:</h3>
-                    <div class="current-text-display" id="current-text-display">
-                        <div class="text-to-type" id="text-to-type">
-                            <div class="text-line">Mulai mengetik di bawah untuk memulai game...</div>
-                        </div>
-                        <div class="text-info">
-                            <span id="text-length">0 karakter</span>
-                            <span id="text-number">Kalimat #1</span>
-                            <span id="word-count">0 kata</span>
-                        </div>
+            <!-- TAMPILAN TUNGGAL UNTUK KALIMAT -->
+            <div class="typing-display">
+                <h3><i class="fas fa-keyboard"></i> Ketik Kalimat Ini:</h3>
+                <div class="typing-area" id="typing-area">
+                    <div class="typing-text" id="typing-text">
+                        <div class="text-line">Mulai mengetik di bawah untuk memulai game...</div>
                     </div>
-                </div>
-
-                <div class="typed-text-container">
-                    <h3><i class="fas fa-history"></i> Input Anda:</h3>
-                    <div class="typed-text-display" id="typed-text-display">
-                        <div class="empty-message">Mulai mengetik di bawah...</div>
+                    <div class="typing-info">
+                        <span id="text-length">0 karakter</span>
+                        <span id="text-number">Kalimat #1</span>
+                        <span id="word-count">0 kata</span>
                     </div>
                 </div>
             </div>
@@ -126,7 +118,7 @@
                 <div class="input-wrapper">
                     <textarea 
                         id="text-input" 
-                        placeholder="Ketik di sini untuk memulai game..."
+                        placeholder="Ketik di sini untuk memulai game. Game otomatis mulai saat Anda mengetik..."
                         rows="3"
                         autocomplete="off"
                         autocorrect="off"
@@ -145,7 +137,7 @@
                 </div>
                 <div class="input-info">
                     <div class="hint">
-                        <i class="fas fa-info-circle"></i> Game akan otomatis mulai saat Anda mengetik
+                        <i class="fas fa-info-circle"></i> Game otomatis mulai saat mengetik. Auto-submit saat selesai.
                     </div>
                     <div class="char-count">
                         <span id="typed-chars">0</span> karakter diketik
@@ -240,7 +232,8 @@
                     <p>1. Pilih mode kalimat (Pendek, Sedang, Panjang, atau Campuran)</p>
                     <p>2. <strong>Langsung mulai mengetik</strong> - game otomatis akan mulai</p>
                     <p>3. Ketik kalimat yang muncul di kotak atas</p>
-                    <p>4. Gunakan SPASI seperti mengetik biasa, sistem akan otomatis lanjut ke kalimat baru</p>
+                    <p>4. Warna akan berubah: <span class="correct-char">hijau</span> (benar), <span class="incorrect-char">merah</span> (salah)</p>
+                    <p>5. Game otomatis lanjut ke kalimat berikutnya saat selesai</p>
                 </div>
                 <div class="instruction">
                     <h4><i class="fas fa-infinity"></i> Sistem Kalimat Tak Terbatas</h4>
@@ -253,7 +246,7 @@
                     <h4><i class="fas fa-chart-bar"></i> Penilaian</h4>
                     <p><strong>KPM (Kata per Menit):</strong> Total kata benar per menit</p>
                     <p><strong>Akurasi Kalimat:</strong> Persentase kalimat yang diketik dengan benar</p>
-                    <p><strong>Skor:</strong> (Kata Benar × 5) × Akurasi × Multiplier mode</p>
+                    <p><strong>Skor:</strong> (Kalimat Benar × 25) × Akurasi × Multiplier mode</p>
                     <p><strong>Multiplier:</strong> Pendek (1x), Sedang (1.5x), Panjang (2x), Campuran (1.2x-2x)</p>
                 </div>
                 <div class="instruction">
@@ -282,10 +275,10 @@
                     <h4>Fitur Utama:</h4>
                     <ul>
                         <li><strong>Auto-Start:</strong> Langsung mulai saat mengetik tanpa klik tombol</li>
-                        <li><strong>Sistem Spasi Otomatis:</strong> Ketik seperti biasa, gunakan SPASI untuk lanjut</li>
+                        <li><strong>Warna Real-time:</strong> <span class="correct-char">Hijau</span> untuk benar, <span class="incorrect-char">Merah</span> untuk salah</li>
                         <li><strong>Auto-Submit:</strong> Sistem otomatis lanjut ke kalimat baru</li>
                         <li><strong>4 Mode Kesulitan:</strong> Sesuaikan dengan level kemampuan</li>
-                        <li><strong>Highlight Real-time:</strong> Lihat kesalahan langsung saat mengetik</li>
+                        <li><strong>Tampilan Tunggal:</strong> Fokus pada satu kalimat sekaligus</li>
                         <li><strong>Statistik Lengkap:</strong> KPM, akurasi, skor, dan rating bintang</li>
                     </ul>
                     
@@ -316,15 +309,15 @@
                     <h4>Keterangan Warna:</h4>
                     <div class="color-guide">
                         <div class="color-item">
-                            <span class="color-box" style="background-color: rgba(76, 201, 240, 0.3);"></span>
+                            <span class="color-box correct-char"></span>
                             <span class="color-text">Karakter Benar</span>
                         </div>
                         <div class="color-item">
-                            <span class="color-box" style="background-color: rgba(247, 37, 133, 0.3);"></span>
+                            <span class="color-box incorrect-char"></span>
                             <span class="color-text">Karakter Salah</span>
                         </div>
                         <div class="color-item">
-                            <span class="color-box" style="background-color: rgba(67, 97, 238, 0.3);"></span>
+                            <span class="color-box current-char"></span>
                             <span class="color-text">Karakter Saat Ini</span>
                         </div>
                     </div>
